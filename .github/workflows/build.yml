@@ -1,4 +1,4 @@
-name: Build and Pack
+name: Build 
 
 # This action will start when a correctly formatted tag is pushed (e.g. 0.1.0)
 
@@ -24,7 +24,4 @@ jobs:
  
         
     - name: Build
-      run: dotnet build .\uSync.Complete.HangfireJobs\uSync.Complete.HangfireJobs.csproj -c Release /p:Version=${{github.ref_name}}
-
-    - name: Pack
-      run: dotnet pack .\uSync.Complete.HangfireJobs\uSync.Complete.HangfireJobs.csproj -c Release /p:Version=${{github.ref_name}} --no-build --output .
+      run: dotnet build .\uSync.Complete.HangfireJobs\uSync.Complete.HangfireJobs.csproj -c Release
