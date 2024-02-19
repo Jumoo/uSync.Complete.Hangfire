@@ -23,11 +23,11 @@
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 
 		<Description>Hangfire helpers for uSync.Complete</Description>
-		<Copyright>Jumoo @ 2013-2023</Copyright>
+		<Copyright>Jumoo @ 2024</Copyright>
 
 		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
-		<PackageProjectUrl>https://jumoo.co.uk/uSync</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/KevinJump/uSync</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Jumoo/uSync.Complete.Hangfire</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Jumoo/uSync.Complete.Hangfire</RepositoryUrl>
 	
 	</PropertyGroup>
 

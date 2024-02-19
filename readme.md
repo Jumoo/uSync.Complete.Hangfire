@@ -45,3 +45,5 @@ public class ScheduledSitePublishComposer : IComposer
 ```
 
 See the examples in the repo for more. 
+
+https://github.com/Jumoo/uSync.Complete.Hangfire
