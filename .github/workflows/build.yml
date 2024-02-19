@@ -22,8 +22,9 @@ jobs:
       with:
         dotnet-version: 8.0.x
  
+        
     - name: Build
-      run: dotnet build .\uSync.Complete.HangfireJobs.csproj -c Release /p:Version=${{github.ref_name}}
+      run: dotnet build .\uSync.Complete.HangfireJobs\uSync.Complete.HangfireJobs.csproj -c Release /p:Version=${{github.ref_name}}
 
     - name: Pack
-      run: dotnet pack .\uSync.Complete.HangfireJobs.csproj -c Release /p:Version=${{github.ref_name}} --no-build --output .
+      run: dotnet pack .\uSync.Complete.HangfireJobs\uSync.Complete.HangfireJobs.csproj -c Release /p:Version=${{github.ref_name}} --no-build --output .
