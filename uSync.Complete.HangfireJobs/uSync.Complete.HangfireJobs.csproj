@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<IncludeSymbols>false</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageIcon>usync-logo.png</PackageIcon>
+	</PropertyGroup>
+
+	<PropertyGroup>
+
+		<Product>uSync Complete Hangfire</Product>
+		<PackageId>uSync.Complete.Hangfire</PackageId>
+		
+		<Authors>Kevin Jump</Authors>
+		<Company>Jumoo</Company>
+
+		<PackageTags>umbraco usync umbraco-marketplace</PackageTags>
+
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+
+		<Description>Hangfire helpers for uSync.Complete</Description>
+		<Copyright>Jumoo @ 2013-2023</Copyright>
+
+		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://jumoo.co.uk/uSync</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/KevinJump/uSync</RepositoryUrl>
+	
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false"/>
+		<None Include="../readme.md" Pack="true" PackagePath="\" />
+		<None Include="assets/readme.txt" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="uSync.Expansions.Core" Version="13.1.0" />
+		<PackageReference Include="uSync.Publisher" Version="13.1.0" />
+		<PackageReference Include="Cultiv.Hangfire" Version="3.1.2" />
+	</ItemGroup>
+
+</Project>
