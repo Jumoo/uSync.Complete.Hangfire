@@ -81,5 +81,21 @@ public class uSyncScheduledJobs
             },
             -1);
     }
-   
+
+    public async Task PullAndBackup(string serverAlias)
+    {
+        await _publisherScheduler.PublishContent(-1, serverAlias, PublishMode.Pull,
+
+        new SyncSchedulerOptions
+        {
+            DependencyFlags = DependencyFlags.IncludeChildren,
+            Options = new SyncPackOptions
+            {
+                CreateRestorePoint = true,
+                EnableRollback = true,
+                SkipReport = true
+            }
+        });
+    }
+
 }

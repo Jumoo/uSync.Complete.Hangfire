@@ -32,15 +32,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false"/>
+		<None Include="assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false" />
 		<None Include="../readme.md" Pack="true" PackagePath="\" />
 		<None Include="assets/readme.txt" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 
 	<ItemGroup>
-		<PackageReference Include="uSync.Expansions.Core" Version="13.1.0" />
-		<PackageReference Include="uSync.Publisher" Version="13.1.0" />
+		<PackageReference Include="uSync.Expansions.Core" Version="13.1.10" />
+		<PackageReference Include="uSync.Publisher" Version="13.1.10" />
 		<PackageReference Include="Cultiv.Hangfire" Version="3.1.2" />
 	</ItemGroup>
 

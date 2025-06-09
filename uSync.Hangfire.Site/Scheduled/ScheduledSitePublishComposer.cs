@@ -50,6 +50,9 @@ public class ScheduledSitePublishComposer : IComposer
 
         RecurringJob.AddOrUpdate<ISyncRestorePointScheduler>(
             "Create restore point", x => x.CreateRestorePoint("Daily."), Cron.Daily());
+
+        RecurringJob.AddOrUpdate<uSyncScheduledJobs>(
+            "Pull and create restore point", x => x.PullAndBackup("target"), Cron.Daily());
     }
 
 

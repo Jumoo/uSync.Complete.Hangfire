@@ -9,9 +9,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Umbraco.Cms" Version="13.1.1" />
+		<PackageReference Include="Umbraco.Cms" Version="13.9.0" />
 		<PackageReference Include="Cultiv.Hangfire" Version="3.1.2" />
-		<PackageReference Include="uSync.Complete" Version="13.1.0" />
+		<PackageReference Include="uSync.Complete" Version="13.1.10" />
 		<ProjectReference Include="..\uSync.Complete.HangfireJobs\uSync.Complete.HangfireJobs.csproj" />
 	</ItemGroup>
 
