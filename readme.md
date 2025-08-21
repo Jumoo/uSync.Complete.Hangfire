@@ -2,10 +2,16 @@
 
 Two libraries that help you run uSync commands as part of hangfire jobs.
 
+_Requires: Cultiv.Hangfire package_
+
 ## uSync.Hangfire
 
 Contains helpers for the core (free) uSync package. that allow you to run
 imports or exports via hangfire.
+
+```
+dotnet add pacakge uSync.Hangfire
+```
 
 ### Example - Add a hangfire job to export once a day.
 
@@ -15,7 +21,13 @@ builder.AddDailySyncExportJob("Daily Export", 17, 10);
 
 ## uSync.Complete.Hangfire
 
-Contains helpers for uSync.Complete that let you do cool things such as
+Contains helpers for uSync.Complete
+
+```
+dotnet add package uSync.Complete.Hangfire
+```
+
+that let you do cool things such as
 
 - create a restore point
 - push or pull content between servers
