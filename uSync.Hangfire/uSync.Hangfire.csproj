@@ -6,6 +6,26 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Project>uSync.Hangfire</Project>
+    <PackageId>uSync.Hangfire</PackageId>
+
+    <Authors>Kevin Jump</Authors>
+    <Company>Jumoo</Company>
+
+    <PackageTags>umbraco usync hangfire umbraco-marketplace</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+
+    <Description>Hangfire helpers for uSync</Description>
+    <Copyright>Copyright © 2024-5 Jumoo</Copyright>
+
+    <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Jumoo/uSync.Hangfire</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Jumoo/uSync.Hangfire</RepositoryUrl>
+
+  </PropertyGroup>
+
+
   <ItemGroup>
     <Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\appsettings-schema.json" />
     <Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\appsettings-schema.Umbraco.Cms.json" />
@@ -13,12 +33,17 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Cultiv.Hangfire" Version="4.1.3">
-		  <ExcludeAssets>build;buildMultitargeting;buildTransitive</ExcludeAssets>
-	  </PackageReference>
-	  <PackageReference Include="uSync" Version="16.0.3-build.20250815.6">
-		  <ExcludeAssets>build</ExcludeAssets>
-	  </PackageReference>
+    <PackageReference Include="Cultiv.Hangfire" Version="4.1.3">
+      <ExcludeAssets>build;buildMultitargeting;buildTransitive</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="uSync" Version="16.0.3-build.20250815.6">
+      <ExcludeAssets>build</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="../assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false"/>
+    <None Include="../readme.md" Pack="true" PackagePath="\" />
+    <None Include="../assets/readme.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>

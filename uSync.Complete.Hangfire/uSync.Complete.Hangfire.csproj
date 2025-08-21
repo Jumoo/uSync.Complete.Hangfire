@@ -6,10 +6,29 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<Project>uSync.Complete.Hangfire</Project>
+		<PackageId>uSync.Complete.Hangfire</PackageId>
+
+		<Authors>Kevin Jump</Authors>
+		<Company>Jumoo</Company>
+
+		<PackageTags>umbraco usync hangfire umbraco-marketplace</PackageTags>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+
+		<Description>Hangfire helpers for uSync.Complete</Description>
+		<Copyright>Copyright © 2024-5 Jumoo</Copyright>
+
+		<PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/Jumoo/uSync.Hangfire</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Jumoo/uSync.Hangfire</RepositoryUrl>
+	</PropertyGroup>
+
+
 	<ItemGroup>
-	  <Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\appsettings-schema.json" />
-	  <Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\appsettings-schema.Umbraco.Cms.json" />
-	  <Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\umbraco-package-schema.json" />
+		<Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\appsettings-schema.json" />
+		<Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\appsettings-schema.Umbraco.Cms.json" />
+		<Content Remove="C:\Users\kevin\.nuget\packages\cultiv.hangfire\4.1.3\contentFiles\any\net8.0\umbraco-package-schema.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -20,6 +39,12 @@
 
 		<PackageReference Include="uSync.Expansions.Core" Version="16.0.5-build.20250821.10" />
 		<PackageReference Include="uSync.Publisher" Version="16.0.5-build.20250821.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="../assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false"/>
+		<None Include="../readme.md" Pack="true" PackagePath="\" />
+		<None Include="../assets/readme.txt" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
