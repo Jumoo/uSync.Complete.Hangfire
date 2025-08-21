@@ -56,7 +56,7 @@ as the root fpr the push or the pull
 ```cs
 builder.CreatePullMediaJob("Pull Backgrounds folder", // name for Hangfire.
     "Target", // alias of the server.
-    Guid.Parse("f2b3c1d4-5e6f-7a8b-9c0d-e1f2g3h4i5j6"),  // guid of the folder we want to use as root.
+    Guid.Parse("f2b3c1d4-5e6f-7a8b-9c0d-e1f2g3h4i5j6"), // guid of the folder to start from.
     DependencyFlags.IncludeChildren, // flags (like include child items)
     05, 00); // time of day (5 AM)
 ```
