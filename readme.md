@@ -1,8 +1,12 @@
 # uSync.Hangfire
 
-Two libraries that help you run uSync commands as part of hangfire jobs.
+Two libraries that help you run uSync commands as part of hangfire jobs
+inside umbraco
 
-_Requires: Cultiv.Hangfire package_
+**Requires:**
+
+- Umbraco v16
+- Cultiv.Hangfire package
 
 ## uSync.Hangfire
 
