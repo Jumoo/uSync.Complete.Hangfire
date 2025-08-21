@@ -1,0 +1,26 @@
+name: .net Build
+
+# This action will start when a correctly formatted tag is pushed (e.g. 0.1.0)
+
+on:
+  push:
+    branches:
+      - v16/main
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 9.0.x
+
+      - name: uSync.Hangfire
+        run: dotnet build .\uSync.Hangfire\uSync.Hangfire.csproj -c Release
+
+      - name: uSync.Complete.Hangfire
+        run: dotnet build .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj
