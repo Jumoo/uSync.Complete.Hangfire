@@ -37,12 +37,12 @@
 			<ExcludeAssets>build;buildMultitargeting;buildTransitive</ExcludeAssets>
 		</PackageReference>
 
-		<PackageReference Include="uSync.Expansions.Core" Version="16.0.5-build.20250821.10" />
-		<PackageReference Include="uSync.Publisher" Version="16.0.5-build.20250821.10" />
+		<PackageReference Include="uSync.Expansions.Core" Version="16.0.5" />
+		<PackageReference Include="uSync.Publisher" Version="16.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="../assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false"/>
+		<None Include="../assets/usync-logo.png" Pack="true" PackagePath="\" Visible="false" />
 		<None Include="../readme.md" Pack="true" PackagePath="\" />
 		<None Include="../assets/readme.txt" Pack="true" PackagePath="\" />
 	</ItemGroup>

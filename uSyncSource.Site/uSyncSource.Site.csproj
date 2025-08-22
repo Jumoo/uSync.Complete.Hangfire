@@ -10,7 +10,7 @@
     <PackageReference Include="Clean" Version="6.0.1" />
     <PackageReference Include="Cultiv.Hangfire" Version="4.1.3" />
     <PackageReference Include="Umbraco.Cms" Version="16.1.1" />
-    <PackageReference Include="uSync.Complete" Version="16.0.5-build.20250821.10" />
+    <PackageReference Include="uSync.Complete" Version="16.0.5" />
   </ItemGroup>
 
   <ItemGroup>
