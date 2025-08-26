@@ -34,13 +34,31 @@ internal class SyncActionScheduler : ISyncActionScheduler
         {
             Action = HandlerActions.Export,
             Group = group,
-            Set = set,
+            Set = _syncConfigService.Settings.DefaultSet
         };
 
         var handlers = _syncHandlerFactory.GetValidHandlers(options);
 
         var result = await _syncService.ExportAsync(folder, handlers, null);
         return result.ContainsErrors() == false;
+    }
+
+    public async Task<bool> Export(string folder, string[] handlers) 
+    {
+        var options = new SyncHandlerOptions
+        {
+            Action = HandlerActions.Export,
+            Group = "All",
+            Set = "Default",    
+        };
+
+        var validHandlers = _syncHandlerFactory.GetValidHandlers(options)
+            .Where(x => handlers.Contains(x.Handler.Alias))
+            .ToList();
+
+        var result = await _syncService.ExportAsync(folder, validHandlers, null);
+        return result.ContainsErrors() == false;
+
     }
 
     public async Task<bool> Import(string group, bool force)
@@ -63,6 +81,21 @@ internal class SyncActionScheduler : ISyncActionScheduler
         var handlers = _syncHandlerFactory.GetValidHandlers(options);
 
         var result = await _syncService.ImportAsync(folders, force, handlers, options, null);
+        return result.ContainsErrors() == false;
+    }
+
+    public async Task<bool> Import(string folder, string[] handlers, bool force)
+    {
+        var options = new SyncHandlerOptions
+        {
+            Action = HandlerActions.Import,
+            Group = "All",
+            Set = "Default",
+        };
+        var validHandlers = _syncHandlerFactory.GetValidHandlers(options)
+            .Where(x => handlers.Contains(x.Handler.Alias))
+            .ToList();
+        var result = await _syncService.ImportAsync(new[] { folder }, force, validHandlers, options, null);
         return result.ContainsErrors() == false;
     }
 }
