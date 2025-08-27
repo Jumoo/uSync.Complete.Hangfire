@@ -431,4 +431,5 @@ Umbraco/
 *.db
 *.db-*
 *.zip
-/uSyncTarget.Site/uSync
+/*.Site/uSync/**
+
