@@ -18,7 +18,7 @@ public static class SyncRestoreJobs
             Cron.Daily(hour, minute));
     }
 
-    public static void CreateDailyRestoreWithMedia(IUmbracoBuilder builder, 
+    public static void CreateDailyRestoreWithMedia(this IUmbracoBuilder builder, 
         string name, 
         int hour, 
         int minute)

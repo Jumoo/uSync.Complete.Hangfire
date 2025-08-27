@@ -43,7 +43,7 @@ internal class SyncActionScheduler : ISyncActionScheduler
         return result.ContainsErrors() == false;
     }
 
-    public async Task<bool> Export(string folder, string[] handlers) 
+    public async Task<bool> Export(string folder, string[] entityTypes) 
     {
         var options = new SyncHandlerOptions
         {
@@ -52,9 +52,7 @@ internal class SyncActionScheduler : ISyncActionScheduler
             Set = "Default",    
         };
 
-        var validHandlers = _syncHandlerFactory.GetValidHandlers(options)
-            .Where(x => handlers.Contains(x.Handler.Alias))
-            .ToList();
+        var validHandlers = _syncHandlerFactory.GetValidHandlersByEntityType(entityTypes, options);
 
         var result = await _syncService.ExportAsync(folder, validHandlers, null);
         return result.ContainsErrors() == false;
@@ -84,7 +82,7 @@ internal class SyncActionScheduler : ISyncActionScheduler
         return result.ContainsErrors() == false;
     }
 
-    public async Task<bool> Import(string folder, string[] handlers, bool force)
+    public async Task<bool> Import(string folder, string[] entityTypes, bool force)
     {
         var options = new SyncHandlerOptions
         {
@@ -92,9 +90,9 @@ internal class SyncActionScheduler : ISyncActionScheduler
             Group = "All",
             Set = "Default",
         };
-        var validHandlers = _syncHandlerFactory.GetValidHandlers(options)
-            .Where(x => handlers.Contains(x.Handler.Alias))
-            .ToList();
+
+        var validHandlers = _syncHandlerFactory.GetValidHandlersByEntityType(entityTypes, options);
+
         var result = await _syncService.ImportAsync(new[] { folder }, force, validHandlers, options, null);
         return result.ContainsErrors() == false;
     }

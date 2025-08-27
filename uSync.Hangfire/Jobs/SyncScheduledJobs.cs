@@ -43,4 +43,5 @@ public static class SyncScheduledJobs
             scheduler => scheduler.Export($"{folder.TrimEnd('/')}/{DateTime.Now:yyyy_MM_dd_HHmm}", "default", "all"),
             Cron.Daily(hour, minute));
     }
+
 }
