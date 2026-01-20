@@ -19,6 +19,9 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
+               
+      - name: Restore dependencies
+        run: dotnet restore --locked-mode
 
       - name: uSync.Hangfire
         run: dotnet pack .\uSync.Hangfire\uSync.Hangfire.csproj -c Release /p:Version=${{github.ref_name}}
