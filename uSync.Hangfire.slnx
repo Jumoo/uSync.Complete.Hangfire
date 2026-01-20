@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="uSync.Complete.Hangfire/uSync.Complete.Hangfire.csproj" />
+  <Project Path="uSync.Hangfire/uSync.Hangfire.csproj" />
+  <Project Path="uSyncSource.Site/uSyncSource.Site.csproj" />
+  <Project Path="uSyncTarget.Site/uSyncTarget.Site.csproj" />
+</Solution>

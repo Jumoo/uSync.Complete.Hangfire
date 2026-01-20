@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -27,14 +27,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Umbraco.Cms.Infrastructure" Version="16.*" />
-		<PackageReference Include="Umbraco.Cms.Infrastructure" Version="16.*" />
-		<PackageReference Include="Cultiv.Hangfire" Version="4.1.3">
+		<PackageReference Include="Umbraco.Cms.Infrastructure" Version="17.*" />
+		<PackageReference Include="Umbraco.Cms.Infrastructure" Version="17.*" />
+		<PackageReference Include="Cultiv.Hangfire" Version="5.2.0">
 			<ExcludeAssets>build;buildMultitargeting;buildTransitive</ExcludeAssets>
 		</PackageReference>
 
-		<PackageReference Include="uSync.Expansions.Core" Version="16.0.5" />
-		<PackageReference Include="uSync.Publisher" Version="16.0.5" />
+		<PackageReference Include="uSync.Expansions.Core" Version="17.*" />
+		<PackageReference Include="uSync.Publisher" Version="17.*" />
 	</ItemGroup>
 
 	<ItemGroup>

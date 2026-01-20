@@ -1,8 +1,6 @@
 ﻿using Hangfire;
 
-using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Composing;
-using Umbraco.Cms.Core.Models.ContentEditing;
 
 using uSync.Complete.Hangfire.Publisher;
 using uSync.Complete.Hangfire.Restore;
