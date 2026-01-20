@@ -28,7 +28,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Umbraco.Cms.Infrastructure" Version="17.*" />
-		<PackageReference Include="Umbraco.Cms.Infrastructure" Version="17.*" />
 		<PackageReference Include="Cultiv.Hangfire" Version="5.2.0">
 			<ExcludeAssets>build;buildMultitargeting;buildTransitive</ExcludeAssets>
 		</PackageReference>
