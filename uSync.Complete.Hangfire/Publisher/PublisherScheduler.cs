@@ -69,6 +69,13 @@ internal class PublisherScheduler : IPublisherScheduler
 
         return await _scheduler.ProcessPipeline(
            "PublisherPipeline",
-           "RealtimePushStrategy", options);
+           StrategyFor(mode), options);
     }
+
+    private static string StrategyFor(PublishMode mode) => mode switch
+    {
+        PublishMode.Push => "RealtimePushStrategy",
+        PublishMode.Pull => "RealtimePullStrategy",
+        _ => throw new ArgumentOutOfRangeException(nameof(mode)),
+    };
 }
