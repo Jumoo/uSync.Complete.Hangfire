@@ -14,6 +14,11 @@ using Umbraco.Cms.Core.Services;
 namespace uSync.Complete.Hangfire;
 internal class ProcessingScheduler : IProcessingScheduler
 {
+    // gate against two Hangfire jobs (or a job overlapping a manual run) driving
+    // the pipeline machinery concurrently - a second caller fails fast rather than racing.
+    private static readonly SemaphoreSlim _pipelineGate = new(1, 1);
+    private static readonly TimeSpan _pipelineGateTimeout = TimeSpan.FromSeconds(30);
+
     private readonly IPipelineService _pipelineService;
     private readonly IEventAggregator _eventAggregator;
     private readonly ILogger<ProcessingScheduler> _logger;
@@ -29,21 +34,34 @@ internal class ProcessingScheduler : IProcessingScheduler
         _eventAggregator = eventAggregator;
         _userService = userService;
         _logger = logger;
-        
-        
+
+
     }
 
     public async Task<bool> ProcessPipeline(string name, string strategy, IProcessingOptions? options)
     {
-        var user = await GetUser();
+        if (!await _pipelineGate.WaitAsync(_pipelineGateTimeout))
+        {
+            _logger.LogWarning("Unable to start pipeline {name} {strategy} - another pipeline is already running", name, strategy);
+            return false;
+        }
 
-        var pipeline = await CreatePipeline(name, strategy, user);
-        if (pipeline == null) return false;
+        try
+        {
+            var user = await GetUser();
 
-        if (options is not null)
-            await _pipelineService.UpdateOptions(pipeline.Value, options, user);
+            var pipeline = await CreatePipeline(name, strategy, user);
+            if (pipeline == null) return false;
 
-        return await ProgressPipeline(pipeline.Value, string.Empty, user);
+            if (options is not null)
+                await _pipelineService.UpdateOptions(pipeline.Value, options, user);
+
+            return await ProgressPipeline(pipeline.Value, string.Empty, user);
+        }
+        finally
+        {
+            _pipelineGate.Release();
+        }
     }
 
     private async Task<Guid?> CreatePipeline(string name, string strategy, IUser? user)
