@@ -72,7 +72,7 @@ jobs:
 
       # keep a copy regardless of what happens on the push
       - name: upload packages as build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nuget-release-${{ github.ref_name }}
           path: ${{ env.out_folder }}
