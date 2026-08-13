@@ -1,0 +1,90 @@
+name: Build and Package
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [ "main", "*/main" ]
+    paths-ignore:
+      - "**.md"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  config: Release
+  out_folder: ./build-out/
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version_string: ${{ steps.gitversion.outputs.fullSemVer }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3
+        with:
+          versionSpec: "5.x"
+
+      - name: Determine version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3
+        with:
+          useConfigFile: true
+          configFilePath: ./GitVersion.yml
+
+      - name: Display version
+        run: |
+          echo "Full Version: ${{ steps.gitversion.outputs.fullSemVer }}"
+
+  package-up:
+    runs-on: windows-latest
+    needs: version
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: restore
+        run: |
+          dotnet restore .\uSync.Hangfire\uSync.Hangfire.csproj --locked-mode
+          dotnet restore .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj --locked-mode
+
+      - name: build
+        run: >
+          dotnet build .\uSync.Hangfire\uSync.Hangfire.csproj -c ${{ env.config }} --no-restore -p:ContinuousIntegrationBuild=true &&
+          dotnet build .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj -c ${{ env.config }} --no-restore -p:ContinuousIntegrationBuild=true
+
+      # deliberately not --no-build: the version has to be stamped onto the assembly as well
+      # as the nuspec, so these steps rebuild with it.
+      - name: package
+        run: >
+          dotnet pack .\uSync.Hangfire\uSync.Hangfire.csproj
+          -c ${{ env.config }} --output ${{ env.out_folder }}
+          /p:version=${{ needs.version.outputs.version_string }}
+          -p:ContinuousIntegrationBuild=true &&
+          dotnet pack .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj
+          -c ${{ env.config }} --output ${{ env.out_folder }}
+          /p:version=${{ needs.version.outputs.version_string }}
+          -p:ContinuousIntegrationBuild=true
+
+      # NOTE: intentionally no `dotnet nuget push` here - this workflow builds packages
+      # for review on every push to a release branch and does not release. That happens in
+      # release.yml, triggered by pushing a version tag.
+      - name: Upload nuget packages as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-build-output
+          path: ${{ env.out_folder }}

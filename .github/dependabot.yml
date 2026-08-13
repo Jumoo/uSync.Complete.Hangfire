@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Umbraco, uSync and Cultiv.Hangfire are pinned deliberately. The versions referenced
+    # here set the minimum for anyone installing these packages, so they move when we
+    # choose to move them - not on a weekly schedule. Note this also opts them out of
+    # dependabot security updates.
+    ignore:
+      - dependency-name: "Umbraco.*"
+      - dependency-name: "uSync*"
+      - dependency-name: "Cultiv.Hangfire"
+    # majors are deliberately left out of the group so they arrive as one PR each.
+    groups:
+      nuget-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
