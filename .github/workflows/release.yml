@@ -116,13 +116,19 @@ jobs:
           user: ${{ vars.NUGET_USER || 'Jumoo' }}
 
       # --skip-duplicate so re-running a tag is a no-op rather than a failure.
-      # $env:NUGET_API_KEY, not $NUGET_API_KEY - this runner's default shell is
-      # pwsh, where a bare $NAME is an unset local variable, not the env var.
+      #
+      # Two Windows/pwsh quirks here:
+      # - $env:NUGET_API_KEY, not $NUGET_API_KEY - this runner's default shell is
+      #   pwsh, where a bare $NAME is an unset local variable, not the env var.
+      # - the glob has to use a backslash before the filename (".\build-out\*.nupkg").
+      #   With a forward slash - even without a leading "./" - `dotnet nuget push`
+      #   doesn't treat it as a wildcard on Windows and fails with "File does not
+      #   exist", despite the same pattern working fine with no subdirectory at all.
       - name: push to nuget
         env:
           NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
         run: >
-          dotnet nuget push "${{ env.out_folder }}*.nupkg"
+          dotnet nuget push ".\build-out\*.nupkg"
           --api-key "$env:NUGET_API_KEY"
           --source ${{ env.nuget_source }}
           --skip-duplicate
