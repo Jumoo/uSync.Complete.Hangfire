@@ -58,9 +58,10 @@ internal class PublisherScheduler : IPublisherScheduler
             },
             PublisherOptions = new SyncPublisherOptions
             {
-                IncludeChildren = true,
-                IncludeMedia = true,
-                IncludeAncestors = true,
+                IncludeChildren = flags.HasFlag(DependencyFlags.IncludeChildren),
+                IncludeMedia = flags.HasFlag(DependencyFlags.IncludeMedia),
+                IncludeAncestors = flags.HasFlag(DependencyFlags.IncludeAncestors),
+                IncludeDependencies = flags.HasFlag(DependencyFlags.IncludeDependencies),
                 IncludeFileHash = true,
                 SkipReport = true,
             }
