@@ -12,7 +12,7 @@ public static class SyncRestoreJobs
         int minute)
     {
         // Logic to add restore point job
-        RecurringJob.AddOrUpdate<RestorePointScheduler>(
+        RecurringJob.AddOrUpdate<IRestorePointScheduler>(
             name,
             scheduler => scheduler.CreateRestorePoint(name, false),
             Cron.Daily(hour, minute));
@@ -24,7 +24,7 @@ public static class SyncRestoreJobs
         int minute)
     {
         // Logic to add restore point job with media
-        RecurringJob.AddOrUpdate<RestorePointScheduler>(
+        RecurringJob.AddOrUpdate<IRestorePointScheduler>(
             name,
             scheduler => scheduler.CreateRestorePoint(name, true),
             Cron.Daily(hour, minute));
