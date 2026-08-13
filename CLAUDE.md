@@ -79,7 +79,11 @@ effect. Build `IncludeChildren`/`IncludeMedia`/`IncludeAncestors`/etc. on
 
 ## Versioning and releases
 
-Tags are plain `{major}.{minor}.{patch}` (no `v` prefix) pushed on a release branch — that's
-what `release.yml` matches and what it stamps onto the packages via `/p:version=`. There are
-no committed `packages.lock.json` files yet, so `--locked-mode` restore in CI is currently a
+Tags are `v{major}.{minor}.{patch}[-suffix]` pushed on a release branch — `release.yml`
+strips the `v`, validates the rest, and stamps it onto both packages via `/p:version=`.
+Publishing uses [trusted publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing)
+(OIDC) rather than a stored API key, gated behind the `nuget` GitHub environment — the
+nuget.org policy names this repo, the `release.yml` workflow file, and that environment, so
+renaming any of them breaks publishing until the policy is updated to match. There are no
+committed `packages.lock.json` files yet, so `--locked-mode` restore in CI is currently a
 no-op rather than an enforced lock.

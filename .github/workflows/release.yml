@@ -1,8 +1,12 @@
-name: Release Package
+name: Release to NuGet
 
 # Publishing is triggered by pushing a version tag:
 #
-#   git tag 17.0.3 && git push origin 17.0.3
+#   git tag v0.17.3 && git push origin v0.17.3
+#
+# NOTE: "branches" and "tags" under push: are OR'd, not AND'd - a tag filter cannot
+# be restricted to a branch in the trigger itself. The tag has to be on a release
+# branch (v17/main, v18/main, ...), so that is enforced as a step below instead.
 
 permissions:
   contents: read
@@ -10,7 +14,7 @@ permissions:
 on:
   push:
     tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+      - "v*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,11 +29,35 @@ jobs:
   release:
     runs-on: windows-latest
 
+    permissions:
+      contents: read
+      # required for trusted publishing - this is what lets the job request the
+      # short lived OIDC token that NuGet/login exchanges for a push key.
+      id-token: write
+
+    # This is load bearing: the trusted publishing policy on nuget.org names this
+    # environment, and the token exchange is rejected if the job doesn't run in an
+    # environment of exactly this name. Don't remove or rename it without updating
+    # the policy to match.
+    environment: nuget
+
     steps:
       - uses: actions/checkout@v7
         with:
           # full history, the branch containment check below needs it
           fetch-depth: 0
+
+      - name: check the tag looks like a version
+        id: version
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if ! printf '%s' "$version" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::Tag '$GITHUB_REF_NAME' is not v{major}.{minor}.{patch}[-suffix]"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Releasing $version"
 
       - name: check the tag is on a release branch
         shell: bash
@@ -63,24 +91,38 @@ jobs:
         run: >
           dotnet pack .\uSync.Hangfire\uSync.Hangfire.csproj
           -c ${{ env.config }} --output ${{ env.out_folder }}
-          /p:version=${{ github.ref_name }}
+          /p:version=${{ steps.version.outputs.version }}
           -p:ContinuousIntegrationBuild=true &&
           dotnet pack .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj
           -c ${{ env.config }} --output ${{ env.out_folder }}
-          /p:version=${{ github.ref_name }}
+          /p:version=${{ steps.version.outputs.version }}
           -p:ContinuousIntegrationBuild=true
 
       # keep a copy regardless of what happens on the push
       - name: upload packages as build artifact
         uses: actions/upload-artifact@v7
         with:
-          name: nuget-release-${{ github.ref_name }}
+          name: nuget-release-${{ steps.version.outputs.version }}
           path: ${{ env.out_folder }}
 
-      # --skip-duplicate so re-running a tag is a no-op rather than a failure
+      # Trusted publishing: exchanges this job's OIDC token for a short lived NuGet
+      # key, so there is no long lived secret in the repo to leak or rotate. It only
+      # works if a matching policy exists on nuget.org for this repo + workflow, and
+      # "user" must be the nuget.org account that owns that policy.
+      - name: nuget login
+        id: nuget_login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER || 'Jumoo' }}
+
+      # --skip-duplicate so re-running a tag is a no-op rather than a failure.
+      # $env:NUGET_API_KEY, not $NUGET_API_KEY - this runner's default shell is
+      # pwsh, where a bare $NAME is an unset local variable, not the env var.
       - name: push to nuget
+        env:
+          NUGET_API_KEY: ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
         run: >
           dotnet nuget push "${{ env.out_folder }}*.nupkg"
-          -k ${{ secrets.NUGET_API_KEY }}
-          -s ${{ env.nuget_source }}
+          --api-key "$env:NUGET_API_KEY"
+          --source ${{ env.nuget_source }}
           --skip-duplicate

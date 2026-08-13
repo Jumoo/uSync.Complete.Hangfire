@@ -48,14 +48,20 @@ Shared build and package metadata lives in [`Directory.build.props`](Directory.b
 
 ## Releasing
 
-Pushing a version tag on `v17/main` publishes both packages to NuGet:
+Pushing a `v{version}` tag on `v17/main` publishes both packages to NuGet:
 
 ```bash
-git tag 17.0.3 && git push origin 17.0.3
+git tag v0.17.3 && git push origin v0.17.3
 ```
 
-The tag is the version — `17.0.3` publishes `17.0.3`. The workflow refuses to run if the
-tagged commit isn't on a release branch.
+The tag is the version — `v0.17.3` publishes `0.17.3`. The workflow refuses to run if the
+tag isn't a valid version, or if the tagged commit isn't on a release branch.
+
+Authentication is [trusted publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing) —
+the job exchanges a GitHub OIDC token for a short-lived NuGet key, so there is no API key
+stored in the repository. It depends on a policy on nuget.org naming this repository, the
+`release.yml` workflow and the `nuget` environment; if any of those are renamed, the policy
+has to be updated to match or publishing stops working.
 
 Every push to `v17/main` also builds and packs both projects and uploads them as a build
 artifact, so a release candidate can be tested before a tag is pushed.
