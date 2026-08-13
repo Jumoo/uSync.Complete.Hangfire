@@ -1,5 +1,26 @@
 <Project>
-<PropertyGroup>
-  <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-</PropertyGroup>
+
+	<!--
+		NOTE: having this file here stops any Directory.build.props further up the disk from
+		applying, which is why NuGetAuditMode is repeated below - without it, local builds and
+		CI builds would disagree on audit scope.
+	-->
+
+	<PropertyGroup>
+		<DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+
+		<LangVersion>latest</LangVersion>
+
+		<!-- direct, not the default (all) - only warn on packages referenced directly,
+		     not every transitive package pulled in underneath them -->
+		<NuGetAuditMode>direct</NuGetAuditMode>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+		<!-- don't append the build onto the informational version -->
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+	</PropertyGroup>
+
 </Project>

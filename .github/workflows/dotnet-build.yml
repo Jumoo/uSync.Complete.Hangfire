@@ -1,0 +1,49 @@
+name: PR Project Build
+
+permissions:
+  contents: read
+
+# NOTE: this repo releases from "v17/main" - a branch per Umbraco major, matching the
+# rest of Jumoo. Plain "main" is kept in the filter so a re-created main, or a branch
+# that hasn't been moved over yet, still builds.
+on:
+  pull_request:
+    branches: [ "main", "*/main" ]
+    paths-ignore:
+      - "**.md"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  config: Release
+
+jobs:
+  build-projects:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: restore uSync.Hangfire
+        run: dotnet restore .\uSync.Hangfire\uSync.Hangfire.csproj --locked-mode
+
+      - name: build uSync.Hangfire
+        run: >
+          dotnet build .\uSync.Hangfire\uSync.Hangfire.csproj
+          -c ${{ env.config }} --no-restore
+          -p:ContinuousIntegrationBuild=true
+
+      - name: restore uSync.Complete.Hangfire
+        run: dotnet restore .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj --locked-mode
+
+      - name: build uSync.Complete.Hangfire
+        run: >
+          dotnet build .\uSync.Complete.Hangfire\uSync.Complete.Hangfire.csproj
+          -c ${{ env.config }} --no-restore
+          -p:ContinuousIntegrationBuild=true

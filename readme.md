@@ -1,68 +1,70 @@
 # uSync.Hangfire
 
-library that helps you run uSync commands as part of hangfire jobs
-inside umbraco
+Run [uSync](https://usync.dev) operations as scheduled Hangfire background jobs inside Umbraco.
 
-**Requires:**
+## Packages
 
-- Umbraco v16
-- Cultiv.Hangfire package
+| Package | What it is |
+| --- | --- |
+| [`uSync.Hangfire`](uSync.Hangfire) | Helpers for the core (free) uSync package — schedule imports and exports. |
+| [`uSync.Complete.Hangfire`](uSync.Complete.Hangfire) | Helpers for uSync.Complete — schedule restore points, and push/pull content or media between servers. |
 
-## uSync.Hangfire
+Each package has its own [readme](uSync.Hangfire/readme.md) with usage examples; the
+`uSync.Complete.Hangfire` one is [here](uSync.Complete.Hangfire/readme.md).
 
-Contains helpers for the core (free) uSync package. that allow you to run
-imports or exports via hangfire.
-
-```
-dotnet add pacakge uSync.Hangfire
-```
-
-### Example - Add a hangfire job to export once a day.
-
-```cs
-builder.AddDailySyncExportJob("Daily Export", 17, 10);
+```bash
+dotnet add package uSync.Hangfire
 ```
 
-## uSync.Complete.Hangfire
-
-Contains helpers for uSync.Complete
-
-```
+```bash
 dotnet add package uSync.Complete.Hangfire
 ```
 
-that let you do cool things such as
+> Requires the [Cultiv.Hangfire](https://www.nuget.org/packages/Cultiv.Hangfire) package, and
+> `uSync.Complete.Hangfire` additionally requires uSync.Complete (`uSync.Publisher` /
+> `uSync.Expansions.Core`).
 
-- create a restore point
-- push or pull content between servers
-- push or pull media between servers
-- well push or pull anything really.
+## Repository layout
 
-### Example - Create a restore point
+| Path | What it is |
+| --- | --- |
+| `uSync.Hangfire` | The core-uSync package — this is what ships |
+| `uSync.Complete.Hangfire` | The uSync.Complete package — this is what ships |
+| `uSyncSource.Site` / `uSyncTarget.Site` | Two local Umbraco sites for click-testing server-to-server push/pull, and sample scheduled-job code under [`uSyncSource.Site/Scheduled`](uSyncSource.Site/Scheduled) |
 
-```cs
-builder.CreateDailyRestorePointJob("Daily Restore Point", 02, 00);
+## Building
+
+Requires the .NET SDK pinned in [`global.json`](global.json).
+
+```bash
+dotnet build uSync.Hangfire/uSync.Hangfire.csproj -c Release
 ```
 
-### Example - Push all of the content and media to another site once a day
-
-```cs
-builder.CreatePushAllContentAndMediaJob("Daily Site Sync", "Target", 04, 00);
+```bash
+dotnet build uSync.Complete.Hangfire/uSync.Complete.Hangfire.csproj -c Release
 ```
 
-You can also do things like specifiy which bit of content or media to use
-as the root fpr the push or the pull
+Shared build and package metadata lives in [`Directory.build.props`](Directory.build.props).
 
-```cs
-builder.CreatePullMediaJob("Pull Backgrounds folder", // name for Hangfire.
-    "Target", // alias of the server.
-    Guid.Parse("f2b3c1d4-5e6f-7a8b-9c0d-e1f2g3h4i5j6"), // guid of the folder to start from.
-    DependencyFlags.IncludeChildren, // flags (like include child items)
-    05, 00); // time of day (5 AM)
+## Releasing
+
+Pushing a version tag on `v17/main` publishes both packages to NuGet:
+
+```bash
+git tag 17.0.3 && git push origin 17.0.3
 ```
 
-## Helpers and sample code.
+The tag is the version — `17.0.3` publishes `17.0.3`. The workflow refuses to run if the
+tagged commit isn't on a release branch.
 
-Yopu can do more complicated things and there are lots of helpers and sample code
+Every push to `v17/main` also builds and packs both projects and uploads them as a build
+artifact, so a release candidate can be tested before a tag is pushed.
 
-[uSyncSource.Site/Scheduled](uSyncSource.Site/Scheduled) contains some basic commands for a website.
+## Contributing
+
+Please read [SECURITY.md](SECURITY.md) before reporting anything security related, and
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before taking part.
+
+## Licence
+
+[MPL-2.0](LICENCE.txt).
